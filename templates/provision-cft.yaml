@@ -1,9 +1,9 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: Provision cloudformation tempalte
-  title: Create cloudformation stack
-  description: Create cloudformation stack
+  name: provision-cloudformation-template
+  title: Create CloudFormation Stack
+  description: Create CloudFormation Stack
   tags: ['recommended']
 spec:
   owner: guests
@@ -11,14 +11,14 @@ spec:
   parameters:
     - title: Resource type
       required:
-         - ResourceType
+        - ResourceType
       properties:
         ResourceType:
           title: ResourceType
           type: string
-          description: resource type to be created
-          ui:autofocus: true
-          ui:options:
+          description: Resource type to be created
+          'ui:autofocus': true
+          'ui:options':
             allowedHosts:
               - s3
               - create-aws-secret
@@ -29,56 +29,50 @@ spec:
         repoUrl:
           title: Location of the repository
           type: string
-          ui:field: RepoUrlPicker
-          ui:options:
+          'ui:field': RepoUrlPicker
+          'ui:options':
             allowedHosts:
               - github.com
 
   steps:
-# Getting the all the files/details from the template
     - id: fetch-base
-      name: Fetching Details from content folder
+      name: Fetching Details from Content Folder
       action: fetch:template
       input:
-        url: ./${{ parameters.ResourceType }}/ # Location of the content directory where catlog-info.yaml file is present for the template
+        url: ./${{ parameters.ResourceType }}/
         values:
           name: ${{ parameters.ResourceType }}
 
-# Publish the content of the current working directory to our github directory
     - id: publish
       name: Publishing Details
       action: publish:github
       input:
         allowedHosts: ['github.com']
-        description: This repo is to create a s3 bucket ${{ parameters.BucketName }} using backstage.
+        description: This repo is to create an S3 bucket ${{ parameters.BucketName }} using Backstage.
         repoUrl: ${{ parameters.repoUrl }}
-        repoVisibility: public # or 'internal' or 'private'
-        # defaultBranch: master
+        repoVisibility: public
 
-# Triggering CI-CD to create resource in our case github action. 
     - id: github-action
-      name: Starting GitHub action
+      name: Starting GitHub Action
       action: github:actions:dispatch
       input:
-        workflowId: create-stack.yaml # ID of GitHub action WorkFlow
-        repoUrl: 'github.com?repo=epam-backstage-templates&owner=EPAMBackstage'
+        workflowId: create-stack.yaml
+        repoUrl: 'https://github.com/epam-backstage-templates/EPAMBackstage'
         branchOrTagName: 'main'
         workflowInputs:
           resourceType: ${{ parameters.ResourceType }}
 
-# Registering new component in the catalog of backstage.
     - id: register
-      name: Registering the new Component 
+      name: Registering the New Component
       action: catalog:register
       input:
-        repoContentsUrl: ${{steps['publish'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml' # where the info of the catalog is stored.
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
 
-# Output links  are displayed to the user after the template execution.
   output:
     links:
       - title: Repository
-        url: ${{ steps['publish'].output.remoteUrl }}
-      - title: Open in catalog
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in Catalog
         icon: catalog
-        entityRef: ${{ steps['register'].output.entityRef }}
+        entityRef: ${{ steps.register.output.entityRef }}
