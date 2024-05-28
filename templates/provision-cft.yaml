@@ -65,7 +65,7 @@ spec:
           repo_url: ${{ steps.publish.output.remoteUrl }}
           stack_name: 'test_stack'
           template_path: template.json
-          parameters: parameters.json
+          parameters: parameter.json
 
     - id: register
       name: Registering the New Component
