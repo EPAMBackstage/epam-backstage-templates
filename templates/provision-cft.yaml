@@ -61,10 +61,9 @@ spec:
         repoUrl: 'github.com/EPAMBackstage/epam-backstage-templates'
         branchOrTagName: 'main'
         workflowInputs:
-          resourceType: ${{ parameters.ResourceType }}
           branch: 'main'
           repo_url: ${{ parameters.repoUrl }}
-          stack_name: test stack
+          stack_name: 'test_stack'
           template_path: template.json
           parameters: parameters.json
 
