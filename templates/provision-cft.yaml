@@ -58,7 +58,7 @@ spec:
       action: github:actions:dispatch
       input:
         workflowId: create-stack.yaml
-        repoUrl: 'github.com?EPAMBackstage/epam-backstage-templates'
+        repoUrl: 'github.com?repo=epam-backstage-templates&owner=EPAMBackstage'
         branchOrTagName: 'main'
         workflowInputs:
           branch: 'main'
