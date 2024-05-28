@@ -51,5 +51,5 @@ jobs:
           aws cloudformation create-stack \
             --stack-name ${{ inputs.stack_name }} \
             --template-body file://another-repo/${{ inputs.template_path }} \
-            --parameters ${{ inputs.parameters }} \
+            --parameters file://${{ inputs.parameters }} \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
