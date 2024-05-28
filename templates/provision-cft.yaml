@@ -51,6 +51,7 @@ spec:
         description: This repo is to create an S3 bucket ${{ parameters.BucketName }} using Backstage.
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
+        branch: main
 
     - id: github-action
       name: Starting GitHub Action
@@ -61,6 +62,11 @@ spec:
         branchOrTagName: 'main'
         workflowInputs:
           resourceType: ${{ parameters.ResourceType }}
+          branch: 'main'
+          repo_url: ${{ parameters.repoUrl }}
+          stack_name: test stack
+          template_path: template.json
+          parameters: parameters.json
 
     - id: register
       name: Registering the New Component
