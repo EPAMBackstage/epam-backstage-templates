@@ -1,0 +1,54 @@
+name: Clone Repo and Create CloudFormation Stack
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: 'Repository URL to clone'
+        required: true
+        default: 'https://github.com/owner/another-repo.git'
+      branch:
+        description: 'Branch to clone'
+        required: false
+        default: 'main'
+      stack_name:
+        description: 'The name of the CloudFormation stack'
+        required: true
+      template_path:
+        description: 'The path to the CloudFormation template in the cloned repo'
+        required: true
+      parameters:
+        description: 'The parameters for the CloudFormation stack in JSON format'
+        required: false
+        default: '{}'
+
+jobs:
+  clone-and-create-stack:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository where the workflow is defined
+      - name: Checkout this repository
+        uses: actions/checkout@v3
+
+      # Clone another repository
+      - name: Clone another repository
+        run: |
+          git clone --branch ${{ inputs.branch }} ${{ inputs.repo_url }} another-repo
+
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Create CloudFormation stack
+      - name: Create CloudFormation stack
+        run: |
+          aws cloudformation create-stack \
+            --stack-name ${{ inputs.stack_name }} \
+            --template-body file://another-repo/${{ inputs.template_path }} \
+            --parameters ${{ inputs.parameters }} \
+            --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
