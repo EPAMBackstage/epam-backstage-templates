@@ -18,12 +18,10 @@ spec:
           title: ResourceType
           type: string
           description: Resource type to be created
-          ui:autofocus: true
-          ui:options:
-            allowedKinds:
-              - aws-s3
-              - aws-secret
-              - aws-iam-user
+          enum:
+            - aws-s3
+            - aws-secret
+            - aws-iam-user
     - title: StackName
       required:
         - StackName
