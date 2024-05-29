@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: 'aws-iam-user-resource'
+  title: 'create iam user resource'
+  description: 'create iam user resource'
+spec:
+  type: AWS
+  lifecycle: experimental
+  owner: user:guest
