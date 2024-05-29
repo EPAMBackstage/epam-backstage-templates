@@ -20,8 +20,10 @@ spec:
           description: Resource type to be created
           ui:autofocus: true
           ui:options:
-            - s3
-            - create-aws-secret
+            allowedKinds:
+              - aws-s3
+              - aws-secret
+              - aws-iam-user
     - title: StackName
       required:
         - StackName
@@ -55,7 +57,7 @@ spec:
       input:
         allowedHosts:
           - github.com
-        description: This repo is to create an S3 bucket ${{ parameters.BucketName }}
+        description: This repo is to create ${{ parameters.ResourceType }} resources using cloudformation templates 
           using Backstage.
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
@@ -78,7 +80,7 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: /catalog-info.yaml
+        catalogInfoPath: /${{ parameters.ResourceType }}.yaml
   output:
     links:
       - title: Repository
