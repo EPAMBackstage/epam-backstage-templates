@@ -19,9 +19,17 @@ spec:
           description: Resource type to be created
           'ui:autofocus': true
           'ui:options':
-            allowedHosts:
-              - s3
-              - create-aws-secret
+            - s3
+            - create-aws-secret
+    - title: StackName
+      required:
+        - StackName
+      properties:
+        StackName:
+          title: StackName
+          type: string
+          description: unique StackName to be created
+
     - title: Choose a Repository Location
       required:
         - repoUrl
@@ -63,7 +71,7 @@ spec:
         workflowInputs:
           branch: 'main'
           repo_url: ${{ steps.publish.output.remoteUrl }}
-          stack_name: 'teststack'
+          stack_name: ${{ parameters.StackName }}
           template_path: template.json
           parameters: parameter.json
 
