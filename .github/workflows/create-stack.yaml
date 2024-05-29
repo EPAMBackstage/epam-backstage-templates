@@ -24,7 +24,7 @@ on:
 
 jobs:
   clone-and-create-stack:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       # Checkout the repository where the workflow is defined
@@ -42,8 +42,8 @@ jobs:
           aws-region: us-east-1
           #role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_DEPLOY_ROLE }}
           #role-session-name: myGitHubActions
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          #aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           
       # Create CloudFormation stack
       - name: Create CloudFormation stack
