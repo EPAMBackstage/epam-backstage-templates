@@ -22,6 +22,7 @@ spec:
             - aws-s3
             - aws-secret
             - aws-iam-user
+            - aws-elastic-beanstalk-app
     - title: StackName
       required:
         - StackName
