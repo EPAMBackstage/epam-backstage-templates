@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: 'aws-elastic-beanstalk-app'
+  title: 'create aws elastic beanstalk app'
+  description: 'create aws elastic beanstalk app'
+spec:
+  type: AWS
+  lifecycle: experimental
+  owner: user:guest

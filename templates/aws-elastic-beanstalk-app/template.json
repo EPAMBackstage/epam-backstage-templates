@@ -1,0 +1,10 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",    
+    "Parameters": {
+        "s3bucket": {
+            "Type": "String",
+            "Description": "Enter the s3 bucket name"
+        }
+    },
+    "Resources": {}
+}
