@@ -1,6 +1,10 @@
 [
     {
-        "ParameterKey": "s3bucket",
-        "ParameterValue": "test"
-    }    
+        "ParameterKey": "S3BucketName",
+        "ParameterValue": "elasticbeanstalk-us-east-1-470761302342"
+    },
+    {
+        "ParameterKey": "S3Key",
+        "ParameterValue": "app.zip"
+    }   
 ]
