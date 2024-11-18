@@ -1,0 +1,89 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: test-template
+  title: Test Template
+  description: to test the multi-template
+  tags:
+    - recommended
+spec:
+  owner: guests
+  type: service
+  parameters:
+    - title: Resource type
+      required:
+        - ResourceType
+      properties:
+        ResourceType:
+          title: ResourceType
+          type: string
+          description: Resource type to be created
+          enum:
+            - aws-s3
+            - aws-secret
+            - aws-iam-user
+            - aws-elastic-beanstalk-app
+    - title: StackName
+      required:
+        - StackName
+      properties:
+        StackName:
+          title: StackName
+          type: string
+          description: unique StackName to be created
+    - title: Choose a Repository Location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Location of the repository
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+  steps:
+    - id: fetch-base
+      name: Fetching Details from Content Folder
+      action: fetch:template
+      input:
+        url: ./${{ parameters.ResourceType }}/
+        values:
+          name: ${{ parameters.ResourceType }}
+    - id: publish
+      name: Publishing Details
+      action: publish:github
+      input:
+        allowedHosts:
+          - github.com
+        description: This repo is to create ${{ parameters.ResourceType }} resources using cloudformation templates 
+          using Backstage.
+        repoUrl: ${{ parameters.repoUrl }}
+        repoVisibility: public
+        defaultBranch: main
+    - id: github-action
+      name: Starting GitHub Action
+      action: github:actions:dispatch
+      input:
+        workflowId: create-stack.yaml
+        repoUrl: github.com?repo=epam-backstage-templates&owner=EPAMBackstage
+        branchOrTagName: main
+        workflowInputs:
+          branch: main
+          repo_url: ${{ steps.publish.output.remoteUrl }}
+          stack_name: ${{ parameters.StackName }}
+          template_path: template.json
+          parameters: parameter.json
+    - id: register
+      name: Registering the New Component
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /${{ parameters.ResourceType }}.yaml
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
