@@ -1,0 +1,7 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: templates-root
+spec:
+  type: url
+  target: https://github.com/EPAMBackstage/epam-backstage-templates/tree/main/templates

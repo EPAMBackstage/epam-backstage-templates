@@ -1,0 +1,7 @@
+apiVersion: backstage.io/v1alpha1
+kind: Template
+metadata:
+  name: folder1-template
+spec:
+  type: file
+  path: provision-s3bucket.yaml
