@@ -4,4 +4,4 @@ metadata:
   name: templates-root
 spec:
   type: url
-  target: https://github.com/EPAMBackstage/epam-backstage-templates/tree/main/templates
+  target: https://github.com/EPAMBackstage/epam-backstage-templates/tree/template-test/templates
